@@ -62,43 +62,34 @@ function Home() {
           alt="Heavy-duty AMP trailer at golden hour"
           width={1920}
           height={1280}
-          className="absolute inset-0 h-full w-full object-cover opacity-40"
+          className="absolute inset-0 h-full w-full object-cover opacity-35"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/85 to-primary/40" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-28 md:py-40">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent backdrop-blur">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Family-Owned · Est. 1983
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-primary/30" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+          <div className="max-w-2xl">
+            <div className="text-xs uppercase tracking-[0.3em] text-accent font-bold mb-5">
+              Family-Owned · Est. 1983
             </div>
-            <h1 className="mt-6 text-5xl md:text-7xl font-display font-bold text-primary-foreground text-balance leading-[0.95]">
-              Premium Trailers <span className="text-accent">Built to Last</span> Since 1983.
+            <h1 className="font-display text-5xl md:text-7xl tracking-wide text-primary-foreground text-balance leading-[1]">
+              Premium trailers <span className="text-accent">built to last.</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-primary-foreground/80 text-balance">
-              Custom-built landscape, cargo, dump, and equipment trailers for the contractors, businesses, and individuals who can't afford to slow down.
+            <p className="mt-6 max-w-lg text-base md:text-lg text-primary-foreground/75">
+              Custom-built for the contractors and businesses who can't afford to slow down.
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to="/inventory"
-                className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3.5 font-semibold text-accent-foreground shadow-elegant transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-4 font-bold uppercase tracking-wider text-accent-foreground shadow-elegant transition-transform hover:-translate-y-0.5"
               >
                 Browse Inventory <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 rounded-md border border-primary-foreground/30 bg-primary-foreground/5 px-6 py-3.5 font-semibold text-primary-foreground backdrop-blur transition-colors hover:bg-primary-foreground/15"
+                className="inline-flex items-center gap-2 rounded-md border border-white/30 bg-white/5 px-6 py-4 font-bold uppercase tracking-wider text-primary-foreground backdrop-blur transition-colors hover:bg-white/15"
               >
                 Get a Quote
               </Link>
             </div>
-
-            <dl className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl">
-              {stats.map((s) => (
-                <div key={s.label}>
-                  <dt className="text-xs uppercase tracking-widest text-primary-foreground/60">{s.label}</dt>
-                  <dd className="mt-1 text-3xl font-display font-bold text-primary-foreground">{s.value}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
         </div>
       </section>
