@@ -35,6 +35,7 @@ const inquiryTypes = [
 function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [inquiry, setInquiry] = useState("quote");
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -44,6 +45,7 @@ function Contact() {
       name: fd.get("name"),
       email: fd.get("email"),
       phone: fd.get("phone"),
+      inquiryType: inquiry,
       trailerType: fd.get("trailerType"),
       message: fd.get("message"),
     });
@@ -51,20 +53,22 @@ function Contact() {
       setError(result.error.issues[0]?.message ?? "Please check your inputs");
       return;
     }
-    const subject = `Trailer inquiry from ${result.data.name}`;
-    const body = `Name: ${result.data.name}\nEmail: ${result.data.email}\nPhone: ${result.data.phone ?? ""}\nTrailer type: ${result.data.trailerType ?? ""}\n\n${result.data.message}`;
+    const inqLabel = inquiryTypes.find((i) => i.value === result.data.inquiryType)?.label ?? result.data.inquiryType;
+    const subject = `[${inqLabel}] from ${result.data.name}`;
+    const body = `Inquiry: ${inqLabel}\nName: ${result.data.name}\nEmail: ${result.data.email}\nPhone: ${result.data.phone ?? ""}\nTrailer type: ${result.data.trailerType ?? ""}\n\n${result.data.message}`;
     window.location.href = `mailto:sales@amptrailers.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSubmitted(true);
   }
 
   return (
     <>
-      <section className="bg-primary text-primary-foreground">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-xs uppercase tracking-[0.25em] text-accent font-semibold mb-3">Get in Touch</div>
-          <h1 className="text-5xl md:text-6xl font-display font-bold text-balance">Let's talk trailers.</h1>
-          <p className="mt-4 max-w-xl text-primary-foreground/80">
-            Tell us what you need. We'll get back to you with a real quote — usually same-day.
+      <section className="relative isolate overflow-hidden bg-gradient-hero text-primary-foreground">
+        <div className="absolute inset-0 grain text-white/[0.04]" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+          <div className="text-xs uppercase tracking-[0.3em] text-accent font-bold mb-4">Get in Touch</div>
+          <h1 className="font-display text-6xl md:text-8xl tracking-wide">Let's talk trailers.</h1>
+          <p className="mt-4 max-w-xl text-primary-foreground/80 text-lg">
+            Tell us what you need — quote, service, financing, or even a job application. We answer personally, usually same-day.
           </p>
         </div>
       </section>
