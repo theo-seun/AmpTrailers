@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Star, Shield, Wrench, Users, Award, Quote } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, Star, Shield, Wrench, Users, Award, Phone } from "lucide-react";
 import heroImg from "@/assets/hero-trailer.jpg";
 import { trailers } from "@/lib/trailers";
 
@@ -29,16 +30,25 @@ const benefits = [
 
 const testimonials = [
   {
-    quote: "Awesome family owned business! Recently bent two axles on our dump trailer. Dropped it off Saturday and got a call Monday — not only repaired, but serviced too. They go above and beyond.",
-    name: "Local Contractor",
+    initial: "K",
+    name: "Ken Foldy",
+    when: "2 years ago",
+    color: "bg-blue-500",
+    quote: "These guys are great. They have a great selection of parts if you need it. I needed 2 wheels and tires for a trailer that was stranded on I-4. Even though it was a drive there, they had what I needed at a great price.",
   },
   {
-    quote: "I bought a trailer from this company today. I will have to say I am a very happy customer. They treated me like they knew me — I'm a customer of theirs from now on.",
-    name: "Verified Buyer",
+    initial: "B",
+    name: "Brian Gutierrez",
+    when: "2 years ago",
+    color: "bg-orange-500",
+    quote: "Highly recommended. I had specific requests of what I needed for my custom trailer build. Roger went above and beyond to make sure I got everything I needed.",
   },
   {
-    quote: "These guys are great. Great selection of parts. I needed 2 wheels and tires for a trailer stranded on I-4. They had what I needed at a fair price. I'll definitely keep them in mind.",
-    name: "Highway Rescue Customer",
+    initial: "B",
+    name: "Brett Mathew",
+    when: "2 years ago",
+    color: "bg-emerald-600",
+    quote: "These guys are simply the best in trailer building!!",
   },
 ];
 
