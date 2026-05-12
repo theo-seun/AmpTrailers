@@ -46,7 +46,7 @@ function TrailerCategory() {
             <div className="text-xs uppercase tracking-[0.25em] text-accent font-semibold mb-3">Built for the work</div>
             <h2 className="text-3xl font-display font-bold mb-6">Standard features.</h2>
             <ul className="space-y-3">
-              {trailer.features.map((f) => (
+              {trailer.features.map((f: string) => (
                 <li key={f} className="flex gap-3">
                   <Check className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
                   <span className="text-foreground">{f}</span>
