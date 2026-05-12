@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
-import { findTrailer, trailers } from "@/lib/trailers";
+import { findTrailer, trailers, type TrailerCategory as TC } from "@/lib/trailers";
 
 export const Route = createFileRoute("/trailers/$type")({
   head: ({ params }) => {
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/trailers/$type")({
       ],
     };
   },
-  loader: ({ params }) => {
+  loader: ({ params }): { trailer: TC } => {
     const trailer = findTrailer(params.type);
     if (!trailer) throw notFound();
     return { trailer };
