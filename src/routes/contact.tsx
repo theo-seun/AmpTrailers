@@ -18,9 +18,19 @@ const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
   email: z.string().trim().email("Valid email required").max(255),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
+  inquiryType: z.string().min(1, "Please choose what you're contacting us about"),
   trailerType: z.string().max(50).optional().or(z.literal("")),
   message: z.string().trim().min(1, "Message is required").max(1000),
 });
+
+const inquiryTypes = [
+  { value: "quote", label: "Get a quote on a trailer", icon: "💵" },
+  { value: "custom", label: "Custom build inquiry", icon: "🛠️" },
+  { value: "service", label: "Service or repair", icon: "🔧" },
+  { value: "financing", label: "Financing question", icon: "📋" },
+  { value: "employment", label: "Employment / careers", icon: "💼" },
+  { value: "general", label: "General question", icon: "💬" },
+];
 
 function Contact() {
   const [submitted, setSubmitted] = useState(false);
