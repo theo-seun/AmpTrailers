@@ -131,29 +131,52 @@ function Contact() {
                 </div>
               ) : (
                 <>
-                  <h2 className="font-display text-2xl font-bold">Request a quote</h2>
+                  <h2 className="font-display text-3xl tracking-wide">Send us a message</h2>
+
+                  <div>
+                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">What's this about? *</label>
+                    <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {inquiryTypes.map((opt) => {
+                        const active = inquiry === opt.value;
+                        return (
+                          <button
+                            type="button"
+                            key={opt.value}
+                            onClick={() => setInquiry(opt.value)}
+                            className={`text-left rounded-lg border px-3 py-2.5 text-xs font-semibold transition-all ${active ? "border-accent bg-accent/10 text-accent shadow-card" : "border-input bg-background text-foreground hover:border-accent/50"}`}
+                          >
+                            <div className="text-base mb-0.5">{opt.icon}</div>
+                            {opt.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Name *</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Name *</label>
                       <input name="name" required maxLength={100} className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
                     </div>
                     <div>
-                      <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Phone</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Phone</label>
                       <input name="phone" type="tel" maxLength={40} className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
                     </div>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Email *</label>
+                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Email *</label>
                     <input name="email" type="email" required maxLength={255} className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
                   </div>
-                  <div>
-                    <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Trailer type</label>
-                    <select name="trailerType" className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
-                      <option value="">Select a type (optional)</option>
-                      {trailers.map((t) => <option key={t.slug} value={t.name}>{t.name}</option>)}
-                      <option value="Custom">Custom build</option>
-                    </select>
-                  </div>
+                  {(inquiry === "quote" || inquiry === "custom") && (
+                    <div>
+                      <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Trailer type</label>
+                      <select name="trailerType" className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+                        <option value="">Select a type (optional)</option>
+                        {trailers.map((t) => <option key={t.slug} value={t.name}>{t.name}</option>)}
+                        <option value="Custom">Custom build</option>
+                      </select>
+                    </div>
+                  )}
                   <div>
                     <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">How can we help? *</label>
                     <textarea name="message" required maxLength={1000} rows={5} className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
