@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Star, Shield, Wrench, Users, Award, Quote } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, Star, Shield, Wrench, Users, Award, Phone } from "lucide-react";
 import heroImg from "@/assets/hero-trailer.jpg";
 import { trailers } from "@/lib/trailers";
 
@@ -29,16 +30,25 @@ const benefits = [
 
 const testimonials = [
   {
-    quote: "Awesome family owned business! Recently bent two axles on our dump trailer. Dropped it off Saturday and got a call Monday — not only repaired, but serviced too. They go above and beyond.",
-    name: "Local Contractor",
+    initial: "K",
+    name: "Ken Foldy",
+    when: "2 years ago",
+    color: "bg-blue-500",
+    quote: "These guys are great. They have a great selection of parts if you need it. I needed 2 wheels and tires for a trailer that was stranded on I-4. Even though it was a drive there, they had what I needed at a great price.",
   },
   {
-    quote: "I bought a trailer from this company today. I will have to say I am a very happy customer. They treated me like they knew me — I'm a customer of theirs from now on.",
-    name: "Verified Buyer",
+    initial: "B",
+    name: "Brian Gutierrez",
+    when: "2 years ago",
+    color: "bg-orange-500",
+    quote: "Highly recommended. I had specific requests of what I needed for my custom trailer build. Roger went above and beyond to make sure I got everything I needed.",
   },
   {
-    quote: "These guys are great. Great selection of parts. I needed 2 wheels and tires for a trailer stranded on I-4. They had what I needed at a fair price. I'll definitely keep them in mind.",
-    name: "Highway Rescue Customer",
+    initial: "B",
+    name: "Brett Mathew",
+    when: "2 years ago",
+    color: "bg-emerald-600",
+    quote: "These guys are simply the best in trailer building!!",
   },
 ];
 
@@ -108,31 +118,38 @@ function Home() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {trailers.map((t) => (
-            <Link
+          {trailers.map((t, i) => (
+            <motion.div
               key={t.slug}
-              to="/trailers/$type"
-              params={{ type: t.slug }}
-              className="group relative overflow-hidden rounded-xl border border-border bg-card shadow-card transition-all hover:shadow-elegant hover:-translate-y-1"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.45, delay: (i % 3) * 0.08 }}
             >
-              <div className="aspect-[4/3] overflow-hidden bg-muted">
-                <img
-                  src={t.image}
-                  alt={t.name}
-                  width={1024}
-                  height={768}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-display font-bold text-foreground">{t.name}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{t.short}</p>
-                <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
-                  Learn more <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+              <Link
+                to="/trailers/$type"
+                params={{ type: t.slug }}
+                className="group block relative overflow-hidden rounded-xl border border-border bg-card shadow-card transition-all hover:shadow-elegant hover:-translate-y-1"
+              >
+                <div className="aspect-[4/3] overflow-hidden bg-muted">
+                  <img
+                    src={t.image}
+                    alt={t.name}
+                    width={1024}
+                    height={768}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
-              </div>
-            </Link>
+                <div className="p-6">
+                  <h3 className="font-display text-2xl tracking-wide text-foreground">{t.name}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{t.short}</p>
+                  <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider text-accent">
+                    Learn more <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -160,29 +177,51 @@ function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="text-xs uppercase tracking-[0.25em] text-accent font-semibold mb-3">Customer Voices</div>
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-balance">
-            What our customers say.
-          </h2>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <figure key={i} className="relative rounded-xl border border-border bg-card p-8 shadow-card">
-              <Quote className="absolute top-6 right-6 h-8 w-8 text-accent/20" />
-              <div className="flex gap-0.5 mb-4">
-                {Array.from({ length: 5 }).map((_, j) => (
-                  <Star key={j} className="h-4 w-4 fill-accent text-accent" />
-                ))}
-              </div>
-              <blockquote className="text-sm leading-relaxed text-foreground">"{t.quote}"</blockquote>
-              <figcaption className="mt-6 text-xs uppercase tracking-widest font-semibold text-muted-foreground">
-                — {t.name}
-              </figcaption>
-            </figure>
-          ))}
+      {/* Testimonials — Google reviews */}
+      <section className="relative isolate overflow-hidden bg-gradient-hero text-primary-foreground">
+        <div className="absolute inset-0 grain text-white/[0.04]" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-xs uppercase tracking-[0.3em] text-accent font-bold mb-3">★★★★★ Google Reviews</div>
+            <h2 className="font-display text-5xl md:text-6xl tracking-wide">Testimonials</h2>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {testimonials.map((t, i) => (
+              <motion.figure
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="relative rounded-2xl bg-card text-card-foreground p-6 shadow-elegant"
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`h-12 w-12 rounded-full ${t.color} text-white grid place-items-center font-bold text-lg`}>{t.initial}</div>
+                  <div>
+                    <div className="font-bold">{t.name}</div>
+                    <div className="text-xs text-muted-foreground">{t.when}</div>
+                  </div>
+                  <svg viewBox="0 0 48 48" className="ml-auto h-7 w-7" aria-label="Google">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                  </svg>
+                </div>
+                <div className="mt-4 flex gap-0.5">
+                  {Array.from({ length: 5 }).map((_, j) => (
+                    <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <blockquote className="mt-3 text-sm leading-relaxed">{t.quote}</blockquote>
+              </motion.figure>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <a href="tel:3867343674" className="inline-flex items-center gap-2 rounded-md bg-accent px-6 py-3.5 font-bold uppercase tracking-wider text-accent-foreground shadow-elegant transition-transform hover:-translate-y-0.5">
+              <Phone className="h-4 w-4" /> (386) 734-3674
+            </a>
+          </div>
         </div>
       </section>
 

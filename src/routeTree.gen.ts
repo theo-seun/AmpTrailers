@@ -9,21 +9,39 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SoldInventoryRouteImport } from './routes/sold-inventory'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ServicesRouteImport } from './routes/services'
 import { Route as InventoryRouteImport } from './routes/inventory'
+import { Route as FinancingRouteImport } from './routes/financing'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrailersTypeRouteImport } from './routes/trailers.$type'
 
+const SoldInventoryRoute = SoldInventoryRouteImport.update({
+  id: '/sold-inventory',
+  path: '/sold-inventory',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InventoryRoute = InventoryRouteImport.update({
   id: '/inventory',
   path: '/inventory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinancingRoute = FinancingRouteImport.update({
+  id: '/financing',
+  path: '/financing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -51,16 +69,22 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/financing': typeof FinancingRoute
   '/inventory': typeof InventoryRoute
+  '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sold-inventory': typeof SoldInventoryRoute
   '/trailers/$type': typeof TrailersTypeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/financing': typeof FinancingRoute
   '/inventory': typeof InventoryRoute
+  '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sold-inventory': typeof SoldInventoryRoute
   '/trailers/$type': typeof TrailersTypeRoute
 }
 export interface FileRoutesById {
@@ -68,8 +92,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/financing': typeof FinancingRoute
   '/inventory': typeof InventoryRoute
+  '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sold-inventory': typeof SoldInventoryRoute
   '/trailers/$type': typeof TrailersTypeRoute
 }
 export interface FileRouteTypes {
@@ -78,24 +105,33 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/financing'
     | '/inventory'
+    | '/services'
     | '/sitemap.xml'
+    | '/sold-inventory'
     | '/trailers/$type'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/contact'
+    | '/financing'
     | '/inventory'
+    | '/services'
     | '/sitemap.xml'
+    | '/sold-inventory'
     | '/trailers/$type'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
+    | '/financing'
     | '/inventory'
+    | '/services'
     | '/sitemap.xml'
+    | '/sold-inventory'
     | '/trailers/$type'
   fileRoutesById: FileRoutesById
 }
@@ -103,13 +139,23 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  FinancingRoute: typeof FinancingRoute
   InventoryRoute: typeof InventoryRoute
+  ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SoldInventoryRoute: typeof SoldInventoryRoute
   TrailersTypeRoute: typeof TrailersTypeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sold-inventory': {
+      id: '/sold-inventory'
+      path: '/sold-inventory'
+      fullPath: '/sold-inventory'
+      preLoaderRoute: typeof SoldInventoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -117,11 +163,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inventory': {
       id: '/inventory'
       path: '/inventory'
       fullPath: '/inventory'
       preLoaderRoute: typeof InventoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/financing': {
+      id: '/financing'
+      path: '/financing'
+      fullPath: '/financing'
+      preLoaderRoute: typeof FinancingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -159,8 +219,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  FinancingRoute: FinancingRoute,
   InventoryRoute: InventoryRoute,
+  ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SoldInventoryRoute: SoldInventoryRoute,
   TrailersTypeRoute: TrailersTypeRoute,
 }
 export const routeTree = rootRouteImport

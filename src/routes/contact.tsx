@@ -18,13 +18,24 @@ const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
   email: z.string().trim().email("Valid email required").max(255),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
+  inquiryType: z.string().min(1, "Please choose what you're contacting us about"),
   trailerType: z.string().max(50).optional().or(z.literal("")),
   message: z.string().trim().min(1, "Message is required").max(1000),
 });
 
+const inquiryTypes = [
+  { value: "quote", label: "Get a quote on a trailer", icon: "💵" },
+  { value: "custom", label: "Custom build inquiry", icon: "🛠️" },
+  { value: "service", label: "Service or repair", icon: "🔧" },
+  { value: "financing", label: "Financing question", icon: "📋" },
+  { value: "employment", label: "Employment / careers", icon: "💼" },
+  { value: "general", label: "General question", icon: "💬" },
+];
+
 function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [inquiry, setInquiry] = useState("quote");
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -34,6 +45,7 @@ function Contact() {
       name: fd.get("name"),
       email: fd.get("email"),
       phone: fd.get("phone"),
+      inquiryType: inquiry,
       trailerType: fd.get("trailerType"),
       message: fd.get("message"),
     });
@@ -41,20 +53,22 @@ function Contact() {
       setError(result.error.issues[0]?.message ?? "Please check your inputs");
       return;
     }
-    const subject = `Trailer inquiry from ${result.data.name}`;
-    const body = `Name: ${result.data.name}\nEmail: ${result.data.email}\nPhone: ${result.data.phone ?? ""}\nTrailer type: ${result.data.trailerType ?? ""}\n\n${result.data.message}`;
+    const inqLabel = inquiryTypes.find((i) => i.value === result.data.inquiryType)?.label ?? result.data.inquiryType;
+    const subject = `[${inqLabel}] from ${result.data.name}`;
+    const body = `Inquiry: ${inqLabel}\nName: ${result.data.name}\nEmail: ${result.data.email}\nPhone: ${result.data.phone ?? ""}\nTrailer type: ${result.data.trailerType ?? ""}\n\n${result.data.message}`;
     window.location.href = `mailto:sales@amptrailers.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSubmitted(true);
   }
 
   return (
     <>
-      <section className="bg-primary text-primary-foreground">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-xs uppercase tracking-[0.25em] text-accent font-semibold mb-3">Get in Touch</div>
-          <h1 className="text-5xl md:text-6xl font-display font-bold text-balance">Let's talk trailers.</h1>
-          <p className="mt-4 max-w-xl text-primary-foreground/80">
-            Tell us what you need. We'll get back to you with a real quote — usually same-day.
+      <section className="relative isolate overflow-hidden bg-gradient-hero text-primary-foreground">
+        <div className="absolute inset-0 grain text-white/[0.04]" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+          <div className="text-xs uppercase tracking-[0.3em] text-accent font-bold mb-4">Get in Touch</div>
+          <h1 className="font-display text-6xl md:text-8xl tracking-wide">Let's talk trailers.</h1>
+          <p className="mt-4 max-w-xl text-primary-foreground/80 text-lg">
+            Tell us what you need — quote, service, financing, or even a job application. We answer personally, usually same-day.
           </p>
         </div>
       </section>
@@ -117,29 +131,52 @@ function Contact() {
                 </div>
               ) : (
                 <>
-                  <h2 className="font-display text-2xl font-bold">Request a quote</h2>
+                  <h2 className="font-display text-3xl tracking-wide">Send us a message</h2>
+
+                  <div>
+                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">What's this about? *</label>
+                    <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {inquiryTypes.map((opt) => {
+                        const active = inquiry === opt.value;
+                        return (
+                          <button
+                            type="button"
+                            key={opt.value}
+                            onClick={() => setInquiry(opt.value)}
+                            className={`text-left rounded-lg border px-3 py-2.5 text-xs font-semibold transition-all ${active ? "border-accent bg-accent/10 text-accent shadow-card" : "border-input bg-background text-foreground hover:border-accent/50"}`}
+                          >
+                            <div className="text-base mb-0.5">{opt.icon}</div>
+                            {opt.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Name *</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Name *</label>
                       <input name="name" required maxLength={100} className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
                     </div>
                     <div>
-                      <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Phone</label>
+                      <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Phone</label>
                       <input name="phone" type="tel" maxLength={40} className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
                     </div>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Email *</label>
+                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Email *</label>
                     <input name="email" type="email" required maxLength={255} className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
                   </div>
-                  <div>
-                    <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Trailer type</label>
-                    <select name="trailerType" className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
-                      <option value="">Select a type (optional)</option>
-                      {trailers.map((t) => <option key={t.slug} value={t.name}>{t.name}</option>)}
-                      <option value="Custom">Custom build</option>
-                    </select>
-                  </div>
+                  {(inquiry === "quote" || inquiry === "custom") && (
+                    <div>
+                      <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Trailer type</label>
+                      <select name="trailerType" className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent">
+                        <option value="">Select a type (optional)</option>
+                        {trailers.map((t) => <option key={t.slug} value={t.name}>{t.name}</option>)}
+                        <option value="Custom">Custom build</option>
+                      </select>
+                    </div>
+                  )}
                   <div>
                     <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">How can we help? *</label>
                     <textarea name="message" required maxLength={1000} rows={5} className="mt-1.5 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
